@@ -66,7 +66,7 @@ public class MedlineFetcher implements EntryFetcher {
      */
     private SearchResult getIds(String term, int start, int pacing) {
 
-        String baseUrl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils";
+        String baseUrl = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils";
         String medlineUrl = baseUrl + "/esearch.fcgi?db=pubmed&retmax=" + Integer.toString(pacing) +
                 "&retstart=" + Integer.toString(start) + "&term=";
 
@@ -218,7 +218,7 @@ public class MedlineFetcher implements EntryFetcher {
      * @return Will return an empty list on error.
      */
     private static List<BibEntry> fetchMedline(String id, OutputPrinter status) {
-        String baseUrl = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&retmode=xml&rettype=citation&id=" +
+        String baseUrl = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&retmode=xml&rettype=citation&id=" +
                 id;
         try {
             URL url = new URL(baseUrl);
