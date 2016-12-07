@@ -168,16 +168,6 @@ public class FieldExtraComponents {
                 panel.output(Localization.lang("Unable to open link."));
             }
         });
-        // lookup doi
-        JButton doiButton = new JButton(Localization.lang("Lookup DOI"));
-        doiButton.addActionListener(actionEvent -> {
-            Optional<DOI> doi = DOI.fromBibEntry(entryEditor.getEntry());
-            if (doi.isPresent()) {
-                entryEditor.getEntry().setField(FieldName.DOI, doi.get().getDOI());
-            } else {
-                panel.frame().setStatus(Localization.lang("No %0 found", FieldName.getDisplayName(FieldName.DOI)));
-            }
-        });
         // fetch bibtex data
         JButton fetchButton = new JButton(
                 Localization.lang("Get BibTeX data from %0", FieldName.getDisplayName(FieldName.DOI)));
@@ -188,7 +178,6 @@ public class FieldExtraComponents {
         });
 
         controls.add(button, BorderLayout.NORTH);
-        controls.add(doiButton, BorderLayout.CENTER);
         controls.add(fetchButton, BorderLayout.SOUTH);
 
         // enable/disable button
