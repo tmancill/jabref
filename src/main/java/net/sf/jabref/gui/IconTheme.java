@@ -41,9 +41,12 @@ public class IconTheme {
     //public static final Color DEFAULT_DISABLED_COLOR = new Color(200, 200, 200);
 
     // Christmas edition
-    public static final Color DEFAULT_COLOR = new Color(0x155115);
-    public static final Color DEFAULT_DISABLED_COLOR = new Color(0x990000);
+    //public static final Color DEFAULT_COLOR = new Color(0x155115);
+    //public static final Color DEFAULT_DISABLED_COLOR = new Color(0x990000);
 
+    // IAAS colors
+    public static final Color DEFAULT_COLOR = new Color(0xca007b);
+    public static final Color DEFAULT_DISABLED_COLOR = new Color(0x680428);
 
     public static final int DEFAULT_SIZE = 24;
     public static final int SMALL_SIZE = 16;
