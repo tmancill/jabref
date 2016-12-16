@@ -1,10 +1,19 @@
 package net.sf.jabref.gui;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.Optional;
 
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
+import javafx.stage.FileChooser;
+
+import net.sf.jabref.JabRefGUI;
+import net.sf.jabref.gui.util.FileDialogConfiguration;
+import net.sf.jabref.logic.l10n.Localization;
+
+import org.controlsfx.dialog.ExceptionDialog;
 
 /**
  * This class provides methods to create default
@@ -43,6 +52,19 @@ public class FXDialogService implements DialogService {
     }
 
     @Override
+    public void showErrorDialogAndWait(String message, Throwable exception) {
+        ExceptionDialog exceptionDialog = new ExceptionDialog(exception);
+        exceptionDialog.setHeaderText(message);
+        exceptionDialog.showAndWait();
+    }
+
+    @Override
+    public void showErrorDialogAndWait(String message) {
+        FXDialog alert = createDialog(AlertType.ERROR, Localization.lang("Error Occurred"), message);
+        alert.showAndWait();
+    }
+
+    @Override
     public Optional<ButtonType> showConfirmationDialogAndWait(String title, String content) {
         FXDialog alert = createDialog(AlertType.CONFIRMATION, title, content);
         return alert.showAndWait();
@@ -63,5 +85,32 @@ public class FXDialogService implements DialogService {
         alert.setDialogPane(contentPane);
         alert.getButtonTypes().setAll(buttonTypes);
         return alert.showAndWait();
+    }
+
+    @Override
+    public void notify(String message) {
+        JabRefGUI.getMainFrame().output(message);
+    }
+
+    @Override
+    public Optional<Path> showSaveDialog(FileDialogConfiguration fileDialogConfiguration) {
+        FileChooser chooser = getConfiguredFileChooser(fileDialogConfiguration);
+        File file = chooser.showSaveDialog(null);
+        return Optional.ofNullable(file).map(File::toPath);
+    }
+
+    @Override
+    public Optional<Path> showOpenDialog(FileDialogConfiguration fileDialogConfiguration) {
+        FileChooser chooser = getConfiguredFileChooser(fileDialogConfiguration);
+        File file = chooser.showOpenDialog(null);
+        return Optional.ofNullable(file).map(File::toPath);
+    }
+
+    private FileChooser getConfiguredFileChooser(FileDialogConfiguration fileDialogConfiguration) {
+        FileChooser chooser = new FileChooser();
+        chooser.getExtensionFilters().addAll(fileDialogConfiguration.getExtensionFilters());
+        chooser.setSelectedExtensionFilter(fileDialogConfiguration.getDefaultExtension());
+        fileDialogConfiguration.getInitialDirectory().map(Path::toFile).ifPresent(chooser::setInitialDirectory);
+        return chooser;
     }
 }
